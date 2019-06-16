@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Form from "./components/Form";
+import Recipes from "./components/Recipes";
+
+const API_KEY = "169460948f0ebdf2442e6d8a19a21ab8";
+
+const App = () => {
+  const [recipes, setRecipes] = useState([]);
+
+  async function getRecipe(e) {
+    const recipeName = e.target.elements.recipeName.value;
+    e.preventDefault();
+    const api_call = await fetch(`https://cors-anywhere.herokuapp.com/http://food2fork.com/api/search?key=${API_KEY}&q=${recipeName}&count=10`);
+    
+    const data = await api_call.json();
+    setRecipes(data.recipes);
+  }
+  useEffect(() => {
+    if(localStorage.getItem("recipes") !== null){
+      const json = localStorage.getItem("recipes");
+      const recipes = JSON.parse(json);
+      setRecipes(recipes);
+      }
+  }, [])
+
+  useEffect(() => { 
+    const jsonrecipes = JSON.stringify(recipes);
+    localStorage.setItem("recipes", jsonrecipes);
+  }, [recipes])
+
+
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1 className="App-title">Recipe Search</h1>
+        </header>
+        <Form getRecipe={getRecipe} />
+        <Recipes recipes={recipes} />
+      </div>
+    );
 }
 
 export default App;
