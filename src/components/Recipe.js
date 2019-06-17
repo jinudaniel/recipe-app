@@ -3,7 +3,7 @@ import React, {useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import Loader from './LoadingPage';
 
-const API_KEY = "169460948f0ebdf2442e6d8a19a21ab8";
+const API_KEY = process.env.REACT_APP_APIKEY; // Your API key here.
 
 const Recipe = (props) => {
   const [activeRecipe, setActiveRecipe] = useState([]);

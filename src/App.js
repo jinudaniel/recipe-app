@@ -4,7 +4,7 @@ import './App.css';
 import Form from "./components/Form";
 import Recipes from "./components/Recipes";
 
-const API_KEY = "169460948f0ebdf2442e6d8a19a21ab8";
+const API_KEY = process.env.REACT_APP_APIKEY; // Your API key here.
 
 const App = () => {
   const [recipes, setRecipes] = useState([]);
